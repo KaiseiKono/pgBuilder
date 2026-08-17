@@ -5,7 +5,7 @@ services:
       - "8080:3000"
     volumes:
       - .:/app
-    command: morbo -l http://0.0.0.0:3000 -w /app/full_mojo_app full_mojo_app/script/full_mojo_app
+    command: morbo -l http://0.0.0.0:3000 -w /app/pgBuilder pgBuilder/script/pgBuilder
     depends_on:
       app-db:
         condition: service_healthy
