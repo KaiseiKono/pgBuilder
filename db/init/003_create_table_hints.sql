@@ -1,0 +1,7 @@
+CREATE TABLE hints (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    problem_id INT NOT NULL,
+    content MEDIUMTEXT,
+    sort_order INT NOT NULL DEFAULT 0,
+    FOREIGN KEY (problem_id) REFERENCES problems(id) ON DELETE CASCADE
+) DEFAULT CHARACTER SET utf8mb4;

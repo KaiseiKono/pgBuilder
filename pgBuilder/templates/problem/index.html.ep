@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>PG Uploader</title></head>
+<body>
+  <h1>.pgファイルをアップロード</h1>
+  <form action="<%= url_for('/upload') %>" method="post" enctype="multipart/form-data">
+    <input type="file" name="pgfile" accept=".pg">
+    <button type="submit">プレビュー</button>
+  </form>
+</body>
+</html>
