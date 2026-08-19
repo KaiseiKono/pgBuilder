@@ -7,32 +7,32 @@ services:
       - .:/app
     command: morbo -l http://0.0.0.0:3000 -w /app/pgBuilder pgBuilder/script/pgBuilder
     depends_on:
-      app-db:
-        condition: service_healthy
+      # app-db:
+      #   condition: service_healthy
       render-api:
         condition: service_started
     environment:
-      DB_DSN: "mariadb://appuser:${APP_DB_PASSWORD}@app-db:3306/webwork_gui"
+      # DB_DSN: "mariadb://appuser:${APP_DB_PASSWORD}@app-db:3306/webwork_gui"
       RENDER_API_URL: "http://render-api:3000"
 
-  app-db:
-    image: mariadb:11
-    environment:
-      MYSQL_ROOT_PASSWORD: ${APP_DB_ROOT_PASSWORD}
-      MYSQL_DATABASE: webwork_gui
-      MYSQL_USER: appuser
-      MYSQL_PASSWORD: ${APP_DB_PASSWORD}
-      TZ: Asia/Tokyo
-    volumes:
-      - app_db_data:/var/lib/mysql
-      # - ./db/init:/docker-entrypoint-initdb.d
-    ports:
-      - "3307:3306"
-    healthcheck:
-      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
+  # app-db:
+  # image: mariadb:11
+  # environment:
+  #   MYSQL_ROOT_PASSWORD: ${APP_DB_ROOT_PASSWORD}
+  #   MYSQL_DATABASE: webwork_gui
+  #   MYSQL_USER: appuser
+  #   MYSQL_PASSWORD: ${APP_DB_PASSWORD}
+  #   TZ: Asia/Tokyo
+  # volumes:
+  #   - app_db_data:/var/lib/mysql
+  #   # - ./db/init:/docker-entrypoint-initdb.d
+  # ports:
+  #   - "3307:3306"
+  # healthcheck:
+  #   test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+  #   interval: 5s
+  #   timeout: 5s
+  #   retries: 10
 
   render-api:
     build:
@@ -45,5 +45,5 @@ services:
     # - ./:/usr/app/public/test:ro
     restart: unless-stopped
 
-volumes:
-  app_db_data:
+# volumes:
+#   app_db_data:

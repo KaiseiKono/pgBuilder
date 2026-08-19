@@ -1,0 +1,24 @@
+DOCUMENT();
+loadMacros(
+    "PGstandard.pl",
+    "MathObjects.pl",
+);
+
+TEXT(beginproblem());
+
+BEGIN_TEXT
+次の式を計算せよ： \(2 + 2 = \) \{ans_rule(20)\}
+END_TEXT
+
+$ans = Compute("4");
+ANS($ans->cmp);
+
+BEGIN_HINT
+まずは足し算の基本を思い出しましょう。
+END_HINT
+
+BEGIN_SOLUTION
+2 + 2 = 4 です。
+END_SOLUTION
+
+ENDDOCUMENT();

@@ -1,0 +1,118 @@
+# Author(Shigeo-Mukai)
+
+# loadMacros
+DOCUMENT();
+loadMacros(
+    "PGstandard.pl",
+    "MathObjects.pl",
+    "PGcourse.pl",
+    "niceTables.pl",
+    "parserPopUp.pl",
+);
+
+# get a new version
+$guest   = ($effectivePermissionLevel == -5); #	practice user
+$observe = ($effectivePermissionLevel >=  5); #	TA or Professor
+
+loadMacros("problemRandomize.pl");
+
+ProblemRandomize(when => "Always", onlyAfterDue => 0, style => "Button")
+    if ($guest or $observe);
+
+$when = (time >= $main::dueDate ? "Always" : "Correct");
+ProblemRandomize(when => $when, onlyAfterDue => 0, style => "Button")
+    if not ($guest or $observe);
+
+
+#problem set-up section
+$context = Context("Numeric");
+
+Context()->variables->add(a=>'Real');
+
+
+
+my @arr;
+my ($r1, $r2, $r3, $r4);
+
+
+@s, @v, $ss;
+
+
+@arr = ( '?', '\( \in \)', '\( \not\in \)' );
+
+$r1 = random( 2, 5 );
+$r2 = non_zero_random( -2, 2 );
+$r3 = random( 3, 4 );
+$r4 = random( 2, 5 );
+
+$s[0] = $r1 . '\;';
+$s[1] = '\Large \frac{' . $r2
+      . '}{' . $r3 .'} \normalsize ';
+$s[2] = '\sqrt{' . $r4 .'} \;';
+
+$v[0] = PopUp( [@arr], $arr[1] );
+$v[1] = PopUp( [@arr], $arr[1] );
+
+if( $r4 == 4 ){
+  $v[2] = PopUp( [@arr], $arr[1] );
+}
+else{
+  $v[2] = PopUp( [@arr], $arr[2] );
+}
+
+$ss = '\fbox{$\hskip0.5em\rule{0pt}{1.5ex}$}';
+
+
+
+
+# text section
+TEXT(beginproblem());
+Context()->texStrings;
+BEGIN_TEXT
+
+
+有理数全体の集合を \( Q \) とします。
+次の \( $ss \) に適する記号 \( \in \) または \( \not\in \)
+を選択してください。
+$PAR
+(1) \(\; $s[0] \; $ss \; Q \quad \quad \)
+(2) \(\; $s[1] \; $ss \; Q \quad \quad \)
+(3) \(\; $s[2] \; $ss \; Q \)
+
+
+$PAR
+$BBOLD
+[解答]
+$EBOLD
+$PAR
+
+\{
+DataTable(
+  [
+    ['(1) ', '\( $s[0] \)', $v[0]->menu(), '\( Q \)' ],
+    ['(2) ', '\( $s[1] \)', $v[1]->menu(), '\( Q \)' ],
+    ['(3) ', '\( $s[2] \)', $v[2]->menu(), '\( Q \)' ],
+  ],
+  align => 'lrll', center => 0, midrules => 0, valign => 'middle',
+);
+\}
+
+
+
+
+
+END_TEXT
+Context()->normalStrings;
+
+#answer and solution
+
+ANS( $v[0]->cmp() );
+ANS( $v[1]->cmp() );
+ANS( $v[2]->cmp() );
+
+
+
+
+
+ENDDOCUMENT();
+
